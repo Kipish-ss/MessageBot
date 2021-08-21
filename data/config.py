@@ -4,7 +4,7 @@ from environs import Env
 env = Env()
 env.read_env()
 API_TOKEN = env.str("API_TOKEN")
-PATH = '/Users/kyryl/Desktop/Кирилл Сидак/Glinobot/data/users.db'
+PATH = '/Users/kyryl/Desktop/users.db'
 
 
 class States(Enum):
