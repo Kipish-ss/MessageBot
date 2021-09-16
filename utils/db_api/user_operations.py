@@ -18,13 +18,11 @@ async def exists(user_id: int = None, user_name: str = None) -> bool:
     return True
 
 
-async def insert_user(user_id: int, user_name: str) -> str:
+async def insert_user(user_id: int, user_name: str,) -> None:
     async with aiosqlite.connect(PATH) as conn:
-        query = "INSERT INTO user_list(id, name) VALUES(?,?)"
+        query = "INSERT INTO user_list(id, name) VALUES(?, ?)"
         await conn.execute(query, (user_id, user_name))
         await conn.commit()
-    text = "You were successfully added to the club!"
-    return text
 
 
 async def others_present() -> bool:
