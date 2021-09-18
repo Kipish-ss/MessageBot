@@ -1,12 +1,24 @@
 from loader import dp
 from aiogram import types
 from keyboards.inline.stats import get_names_keyboard
-from utils.db_api.msg_count import get_msg_count
+from utils.db_api.msg_count import get_msg_count, reset_count
 from utils.db_api.user_operations import others_present
 from utils.db_api.names import get_other_names
 from keyboards.inline.callback_data import stats_callback
 from utils.db_api.states_operations import get_state
 from states.state_storage import States
+
+
+@dp.message_handler(lambda message: get_state(message.from_user.id) == States.type_msg.value, commands=['reset_count'])
+async def reset_msg_count(message: types.Message):
+    text = await reset_count(message.from_user.id)
+    await message.reply(text)
+
+
+@dp.message_handler(lambda message: get_state(message.from_user.id) == States.type_msg.value, commands=["message_count"])
+async def show_msg_count(message: types.Message):
+    count = await get_msg_count(message.from_user.id)
+    await message.reply(f"Your current message count is {count}.")
 
 
 @dp.message_handler(lambda message: get_state(message.from_user.id) == States.type_msg.value, commands=["stats"])

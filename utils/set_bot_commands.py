@@ -13,6 +13,7 @@ async def set_default_commands(dp):
             types.BotCommand("reset_count", "Reset your message count(set "
                                             "it to 0)"),
             types.BotCommand("stats", "Show statistics"),
+            types.BotCommand("destroy", "Destroy your opponent")
 
 
         ]

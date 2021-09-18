@@ -8,7 +8,7 @@ from utils.db_api.states_operations import set_state, get_state
 from utils.db_api.user_operations import insert_user
 
 
-@dp.message_handler(lambda message: get_state(message.from_user.id) == States.start.value,CommandStart())
+@dp.message_handler(lambda message: get_state(message.from_user.id) == States.start.value, CommandStart())
 async def start_handler(message: types.Message):
     """
     This handler will be called when user sends `/start` command
