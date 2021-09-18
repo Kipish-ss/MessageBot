@@ -7,7 +7,7 @@ from utils.set_bot_commands import set_default_commands
 
 
 async def on_startup(dp):
-    await on_startup_notify(dp)
+    # await on_startup_notify(dp)
     await set_default_commands(dp)
 
 if __name__ == '__main__':
