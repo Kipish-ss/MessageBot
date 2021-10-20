@@ -1,9 +1,9 @@
 import aiosqlite
-from data.config import PATH
+from data.config import DB
 
 
 async def update_user_name(new_name: str, user_id: int) -> str:
-    async with aiosqlite.connect(PATH) as conn:
+    async with aiosqlite.connect(DB) as conn:
         query = "UPDATE user_list SET name = ? WHERE id = ?"
         await conn.execute(query, (new_name, user_id))
         await conn.commit()
@@ -13,7 +13,7 @@ async def update_user_name(new_name: str, user_id: int) -> str:
 
 async def get_user_name(user_id: int) -> str:
     try:
-        async with aiosqlite.connect(PATH) as conn:
+        async with aiosqlite.connect(DB) as conn:
             query = "SELECT name FROM user_list WHERE id = ?"
             async with conn.execute(query, (user_id,)) as cursor:
                 name_tuple = await cursor.fetchone()
@@ -24,8 +24,8 @@ async def get_user_name(user_id: int) -> str:
     return name
 
 
-async def get_other_names() -> list:
-    async with aiosqlite.connect(PATH) as conn:
+async def get_all_names() -> list:
+    async with aiosqlite.connect(DB) as conn:
         query = "SELECT name FROM user_list"
         cursor: aiosqlite.Cursor
         async with conn.execute(query) as cursor:
@@ -34,3 +34,18 @@ async def get_other_names() -> list:
     for name in names:
         name_list.append(name[0])
     return name_list
+
+
+async def get_name(msg_count: int):
+    async with aiosqlite.connect(DB) as conn:
+        query = "SELECT name FROM user_list WHERE msg_count = ?"
+        cursor: aiosqlite.Cursor
+        async with conn.execute(query, (msg_count,)) as cursor:
+            name_tuple = await cursor.fetchone()
+    name = name_tuple[0]
+    return name
+
+
+
+
+

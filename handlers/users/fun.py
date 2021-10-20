@@ -2,8 +2,26 @@ from aiogram import types
 from loader import dp, bot
 import re
 from .convert import convert_text
-from data.config import dictionary, reg_exp
+from data.config import dictionary, reg_exp, Z_LOST, IP11, ADMINS
+from aiogram.types import ContentType
 from utils.db_api.msg_count import update_count
+
+
+@dp.message_handler(lambda message: message.chat.id == int(ADMINS[0]), content_types=ContentType.ANY)
+async def echo_message(message: types.Message):
+    if message.text is not None:
+        await bot.send_message(chat_id=IP11, text=message.text)
+    elif message.sticker is not None:
+        await bot.send_sticker(chat_id=IP11, sticker=message.sticker.file_id)
+    elif message.animation is not None:
+        await bot.send_animation(chat_id=IP11, animation=message.animation.file_id)
+
+
+# @dp.message_handler(content_types=ContentType.VOICE)
+# async def fuck_you(message: types.Message):
+#     await update_count(message.from_user.id)
+#     print(message.voice.file_id)
+#     await message.reply_voice('AwACAgQAAxkBAAILa2FG_J430ZaDeFZujrD2KpuEPtVgAAJ5AgAC9DskUp4901Ruz8bIIAQ')
 
 
 @dp.message_handler(commands=["pohui"])
@@ -18,7 +36,12 @@ async def send_sticker_poh(message: types.Message):
 
 @dp.message_handler(commands=["joke"])
 async def send_sticker_joke(message: types.Message):
-    await message.reply_sticker("CAACAgIAAxkBAAEC6XFhQzcUx_r7JNRlEJsw8Jnu5Y-GywAC1Q8AAjk7AUoNfyFxcAquzCAE")
+    message_rep = (message.reply_to_message if message.reply_to_message else message)
+    await message_rep.reply_sticker("CAACAgIAAxkBAAEC6XFhQzcUx_r7JNRlEJsw8Jnu5Y-GywAC1Q8AAjk7AUoNfyFxcAquzCAE")
+    try:
+        await bot.delete_message(message.chat.id, message.message_id)
+    except:
+        print("Cannot delete")
 
 
 @dp.message_handler(commands=["destroy"])
@@ -29,6 +52,12 @@ async def send_punch_sticker(message: types.Message):
         await bot.delete_message(message.chat.id, message.message_id)
     except:
         print("Cannot delete")
+
+
+@dp.message_handler(lambda message: message.from_user.id == 398947810, content_types=ContentType.VOICE)
+async def delete_voice(message: types.Message):
+    await bot.delete_message(chat_id=Z_LOST, message_id=message.message_id)
+    await message.answer("МАКС, СОСАТЬ!")
 
 
 @dp.message_handler(regexp=reg_exp)

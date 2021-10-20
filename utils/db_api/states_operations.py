@@ -1,11 +1,11 @@
 import sqlite3
 import aiosqlite
-from data.config import PATH
+from data.config import DB
 from states import States
 
 
 def get_state(user_id: int) -> int:
-    with sqlite3.connect(PATH) as conn:
+    with sqlite3.connect(DB) as conn:
         query = "SELECT state FROM user_list WHERE id = ?"
         cursor = conn.cursor()
         cursor.execute(query, (user_id,))
@@ -18,7 +18,7 @@ def get_state(user_id: int) -> int:
 
 
 async def set_state(user_id: int, state: int) -> None:
-    async with aiosqlite.connect(PATH) as conn:
+    async with aiosqlite.connect(DB) as conn:
         query = "UPDATE user_list SET state = ? WHERE id = ?"
         await conn.execute(query, (state, user_id))
         await conn.commit()

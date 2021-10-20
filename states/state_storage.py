@@ -13,3 +13,4 @@ class States(Enum):
     start = 0
     type_msg = 1
     update_name = 2
+    type_user = 3

@@ -1,7 +1,7 @@
 from aiogram import types
 from loader import dp
 from states.state_storage import States
-from utils.db_api.user_operations import insert_user, exists
+from utils.db_api.user_operations import exists
 from utils.db_api.names import update_user_name, get_user_name
 from utils.db_api.states_operations import set_state, get_state
 
